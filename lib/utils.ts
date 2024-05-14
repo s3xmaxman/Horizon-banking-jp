@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +194,20 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+
+export const authFormSchema = (type: string) => z.object({
+  //サインアップ
+  firsName: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
+  lastName: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
+  address1: type === "sign-in" ? z.string().optional() : z.string().max(50, "50文字以内で入力してください"),
+  city: type === "sign-in" ? z.string().optional() : z.string().max(50, "50文字以内で入力してください"),
+  state: type === "sign-in" ? z.string().optional() : z.string().min(2, "2文字入力してください").max(2, "2文字で入力してください"),
+  postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください").max(10, "10文字以内で入力してください"),
+  dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
+  ssn: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
+
+  //サインイン
+  email: z.string().email("有効なメールアドレスを入力してください"),
+  password: z.string().min(8, "8文字以上のパスワードを入力してください"),
+});
