@@ -198,7 +198,7 @@ export const getTransactionStatus = (date: Date) => {
 
 export const authFormSchema = (type: string) => z.object({
   //サインアップ
-  firsName: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
+  firstName: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
   lastName: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
   address1: type === "sign-in" ? z.string().optional() : z.string().max(50, "50文字以内で入力してください"),
   city: type === "sign-in" ? z.string().optional() : z.string().max(50, "50文字以内で入力してください"),
