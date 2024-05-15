@@ -52,7 +52,7 @@ const SideBar = ({ user }: SideBarProps) => {
           )
         })}
       </nav>
-      <Footer />
+      <Footer user={user} type="mobile" />
     </section>
   )
 }
