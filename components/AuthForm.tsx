@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import  CustomInput  from '@/components/CustomInput'
 import { authFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
+import { getLoggedInUser, signIn, signUp } from '@/lib/actions/user.actions'
 
 
 
@@ -27,6 +28,7 @@ const AuthForm = ({ type } : { type: string }) => {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  
 
   const formSchema = authFormSchema(type); 
 
@@ -46,11 +48,18 @@ const AuthForm = ({ type } : { type: string }) => {
     try {
       
       if(type === 'sign-up') {
-        
+        const newUser = await signUp(data)
+
+        setUser(newUser)
       }
 
       if(type === 'sign-in') {
+        const response = await signIn({
+          email: data.email,
+          password: data.password
+        })
 
+        if(response) router.push('/')
       }
       
     } catch (error) {
@@ -120,8 +129,8 @@ const AuthForm = ({ type } : { type: string }) => {
                             </>
                         )}
             
-                        <CustomInput control={form.control} name='email' label="Email" placeholder='メールアドレスを入力してください' />
-                        <CustomInput control={form.control} name='password' label="Password" placeholder='パスワードを入力してください' /> 
+                        <CustomInput control={form.control} name='email' label="メールアドレス" placeholder='メールアドレスを入力してください' />
+                        <CustomInput control={form.control} name='password' label="パスワード" placeholder='パスワードを入力してください' /> 
                         
                         <div className='flex flex-col gap-1'>
                             <Button  
