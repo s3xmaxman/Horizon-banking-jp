@@ -202,7 +202,7 @@ export const authFormSchema = (type: string) => z.object({
   lastName: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
   address1: type === "sign-in" ? z.string().optional() : z.string().max(50, "50文字以内で入力してください"),
   city: type === "sign-in" ? z.string().optional() : z.string().max(50, "50文字以内で入力してください"),
-  state: type === "sign-in" ? z.string().optional() : z.string().min(2, "2文字入力してください").max(2, "2文字で入力してください"),
+  state: type === "sign-in" ? z.string().optional() : z.string().min(2, "2文字以上入力してください").max(2, "10文字以内で入力してください"),
   postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください").max(10, "10文字以内で入力してください"),
   dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
   ssn: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
