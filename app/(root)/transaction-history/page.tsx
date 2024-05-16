@@ -1,9 +1,11 @@
 import HeaderBox from '@/components/HeaderBox'
+import TransactionsTable from '@/components/TransactionsTable'
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions'
 import { getLoggedInUser } from '@/lib/actions/user.actions'
+import { formatAmount } from '@/lib/utils'
 import React from 'react'
 
-const TransactionHistory = async ({ searchParams : { id, page}}: SearchParamProps) => {
+const TransactionHistory = async ({ searchParams: { id, page }}: SearchParamProps) => {
   const currentPage = Number(page as string) || 1
   const loggedIn = await getLoggedInUser()
   const accounts = await getAccounts({ userId: loggedIn.$id })
@@ -16,6 +18,8 @@ const TransactionHistory = async ({ searchParams : { id, page}}: SearchParamProp
   const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
 
   const account = await getAccount({ appwriteItemId })
+  
+  console.log({ account, accountsData })
   return (
     <div className='transactions'>
         <div className='transactions-header'>
@@ -38,8 +42,20 @@ const TransactionHistory = async ({ searchParams : { id, page}}: SearchParamProp
                 ●●●● ●●●● ●●●● {account?.data.mask}
               </p>
             </div> 
-            
+
+            <div className='transactions-account-balance'>
+              <p className="text-14">現在の残高</p>
+              <p className="text-24 text-center font-bold">
+                {formatAmount(account?.data.currentBalance)}
+              </p>
+           </div>
           </div>
+
+          <section className='flex w-full flex-col gap-6'>
+            {/* <TransactionsTable 
+              transactions={account?.data.transactions}
+            /> */}
+          </section>
         </div>
     </div>
   )
