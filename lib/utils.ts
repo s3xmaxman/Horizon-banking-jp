@@ -8,56 +8,65 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// FORMAT DATE TIME
+// 日付時刻のフォーマット
 export const formatDateTime = (dateString: Date) => {
+  // 日付時刻のフォーマットオプション
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
-    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
-    month: "short", // abbreviated month name (e.g., 'Oct')
-    day: "numeric", // numeric day of the month (e.g., '25')
-    hour: "numeric", // numeric hour (e.g., '8')
-    minute: "numeric", // numeric minute (e.g., '30')
-    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+    weekday: "short", // 曜日の省略形 (例: '月')
+    month: "short", // 月の省略形 (例: '10月')
+    day: "numeric", // 月の日付 (例: '25')
+    hour: "numeric", // 時 (例: '8')
+    minute: "numeric", // 分 (例: '30')
+    hour12: true, // 12時間制 (true) または 24時間制 (false)
   };
 
+  // 曜日と日付のフォーマットオプション
   const dateDayOptions: Intl.DateTimeFormatOptions = {
-    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
-    year: "numeric", // numeric year (e.g., '2023')
-    month: "2-digit", // abbreviated month name (e.g., 'Oct')
-    day: "2-digit", // numeric day of the month (e.g., '25')
+    weekday: "short", // 曜日の省略形 (例: '月')
+    year: "numeric", // 年 (例: '2023')
+    month: "2-digit", // 月 (例: '10')
+    day: "2-digit", // 日付 (例: '25')
   };
 
+  // 日付のフォーマットオプション
   const dateOptions: Intl.DateTimeFormatOptions = {
-    month: "short", // abbreviated month name (e.g., 'Oct')
-    year: "numeric", // numeric year (e.g., '2023')
-    day: "numeric", // numeric day of the month (e.g., '25')
+    month: "short", // 月の省略形 (例: '10月')
+    year: "numeric", // 年 (例: '2023')
+    day: "numeric", // 日付 (例: '25')
   };
 
+  // 時刻のフォーマットオプション
   const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: "numeric", // numeric hour (e.g., '8')
-    minute: "numeric", // numeric minute (e.g., '30')
-    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+    hour: "numeric", // 時 (例: '8')
+    minute: "numeric", // 分 (例: '30')
+    hour12: true, // 12時間制 (true) または 24時間制 (false)
   };
 
+  // フォーマットされた日付時刻
   const formattedDateTime: string = new Date(dateString).toLocaleString(
     "en-US",
     dateTimeOptions
   );
 
+  // フォーマットされた曜日と日付
   const formattedDateDay: string = new Date(dateString).toLocaleString(
     "en-US",
     dateDayOptions
   );
 
+  // フォーマットされた日付
   const formattedDate: string = new Date(dateString).toLocaleString(
     "en-US",
     dateOptions
   );
 
+  // フォーマットされた時刻
   const formattedTime: string = new Date(dateString).toLocaleString(
     "en-US",
     timeOptions
   );
 
+  // フォーマットされた日付時刻、曜日と日付、日付、時刻を返す
   return {
     dateTime: formattedDateTime,
     dateDay: formattedDateDay,
@@ -66,33 +75,44 @@ export const formatDateTime = (dateString: Date) => {
   };
 };
 
+// 金額をフォーマットする関数
 export function formatAmount(amount: number): string {
+  // 金額のフォーマット
   const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
+    style: "currency", // 通貨スタイル
+    currency: "USD", // 通貨
+    minimumFractionDigits: 2, // 最小小数点以下の桁数
   });
 
+  // フォーマットされた金額を返す
   return formatter.format(amount);
 }
 
+// オブジェクトを文字列に変換してパースする関数
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
+// 特殊文字を削除する関数
 export const removeSpecialCharacters = (value: string) => {
+  // 特殊文字を削除した文字列を返す
   return value.replace(/[^\w\s]/gi, "");
 };
 
+// URLクエリパラメータのインターフェース
 interface UrlQueryParams {
   params: string;
   key: string;
   value: string;
 }
 
+// URLクエリを作成する関数
 export function formUrlQuery({ params, key, value }: UrlQueryParams) {
+  // 現在のURLをパースする
   const currentUrl = qs.parse(params);
 
+  // パラメータを設定する
   currentUrl[key] = value;
 
+  // URLクエリを文字列にして返す
   return qs.stringifyUrl(
     {
       url: window.location.pathname,
@@ -102,7 +122,9 @@ export function formUrlQuery({ params, key, value }: UrlQueryParams) {
   );
 }
 
+// 口座タイプの色を取得する関数
 export function getAccountTypeColors(type: AccountTypes) {
+  // 口座タイプによって色を返す
   switch (type) {
     case "depository":
       return {
@@ -130,68 +152,82 @@ export function getAccountTypeColors(type: AccountTypes) {
   }
 }
 
+// 取引カテゴリをカウントする関数
 export function countTransactionCategories(
   transactions: Transaction[]
 ): CategoryCount[] {
+  // カテゴリごとのカウントを格納するオブジェクト
   const categoryCounts: { [category: string]: number } = {};
+  // トランザクションの総数
   let totalCount = 0;
 
-  // Iterate over each transaction
+  // 各トランザクションを反復処理する
   transactions &&
     transactions.forEach((transaction) => {
-      // Extract the category from the transaction
+      // トランザクションからカテゴリを抽出する
       const category = transaction.category;
 
-      // If the category exists in the categoryCounts object, increment its count
+      // カテゴリがcategoryCountsオブジェクトに存在する場合、そのカウントをインクリメントする
       if (categoryCounts.hasOwnProperty(category)) {
         categoryCounts[category]++;
       } else {
-        // Otherwise, initialize the count to 1
+        // それ以外の場合は、カウントを1に初期化する
         categoryCounts[category] = 1;
       }
 
-      // Increment total count
+      // 総数をインクリメントする
       totalCount++;
     });
 
-  // Convert the categoryCounts object to an array of objects
+  // categoryCountsオブジェクトをオブジェクトの配列に変換する
   const aggregatedCategories: CategoryCount[] = Object.keys(categoryCounts).map(
     (category) => ({
-      name: category,
-      count: categoryCounts[category],
-      totalCount,
+      name: category, // カテゴリ名
+      count: categoryCounts[category], // カテゴリごとのカウント
+      totalCount, // トランザクションの総数
     })
   );
 
-  // Sort the aggregatedCategories array by count in descending order
+  // aggregatedCategories配列をカウントで降順にソートする
   aggregatedCategories.sort((a, b) => b.count - a.count);
 
+  // ソートされたaggregatedCategories配列を返す
   return aggregatedCategories;
 }
 
+// URLから顧客IDを抽出する関数
 export function extractCustomerIdFromUrl(url: string) {
-  // Split the URL string by '/'
+  // URL文字列を '/' で分割する
   const parts = url.split("/");
 
-  // Extract the last part, which represents the customer ID
+  // 最後の部分（顧客IDを表す）を抽出する
   const customerId = parts[parts.length - 1];
 
+  // 顧客IDを返す
   return customerId;
 }
 
+// IDを暗号化する関数
 export function encryptId(id: string) {
+  // IDをBase64エンコードして返す
   return btoa(id);
 }
 
+// IDを復号化する関数
 export function decryptId(id: string) {
+  // IDをBase64デコードして返す
   return atob(id);
 }
 
+// 取引ステータスを取得する関数
 export const getTransactionStatus = (date: Date) => {
+  // 今日の日付を取得する
   const today = new Date();
+  // 2日前の日付を取得する
   const twoDaysAgo = new Date(today);
   twoDaysAgo.setDate(today.getDate() - 2);
 
+  // 取引日が2日前より後の場合は "Processing"、そうでない場合は "Success" を返す
   return date > twoDaysAgo ? "Processing" : "Success";
 };
 
