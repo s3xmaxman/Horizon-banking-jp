@@ -241,7 +241,7 @@ export const authFormSchema = (type: string) => z.object({
   state: type === "sign-in" ? z.string().optional() : z.string().min(2, "2文字以上入力してください").max(2, "10文字以内で入力してください"),
   postalCode: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください").max(10, "10文字以内で入力してください"),
   dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
-  ssn: type === "sign-in" ? z.string().optional() : z.string().min(3, "3文字以上入力してください"),
+  ssn: type === "sign-in" ? z.string().optional() : z.string().min(4, "4文字入力してください").max(4, "4文字で入力してください"),
 
   //サインイン
   email: z.string().email("有効なメールアドレスを入力してください"),
