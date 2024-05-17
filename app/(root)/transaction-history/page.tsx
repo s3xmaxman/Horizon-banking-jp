@@ -6,20 +6,20 @@ import { formatAmount } from '@/lib/utils'
 import React from 'react'
 
 const TransactionHistory = async ({ searchParams: { id, page }}: SearchParamProps) => {
-  const currentPage = Number(page as string) || 1
-  const loggedIn = await getLoggedInUser()
-  const accounts = await getAccounts({ userId: loggedIn.$id })
+  const currentPage = Number(page as string) || 1;
+  const loggedIn = await getLoggedInUser();
+  const accounts = await getAccounts({ 
+    userId: loggedIn.$id 
+  })
 
-  if(!accounts) {
-    return null
-  }
+  if(!accounts) return;
   
-  const accountsData = accounts?.data
+  const accountsData = accounts?.data;
   const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
 
   const account = await getAccount({ appwriteItemId })
   
-  console.log({ account, accountsData })
+  console.log("トランザクション", account?.data)
   return (
     <div className='transactions'>
         <div className='transactions-header'>
@@ -52,9 +52,9 @@ const TransactionHistory = async ({ searchParams: { id, page }}: SearchParamProp
           </div>
 
           <section className='flex w-full flex-col gap-6'>
-            {/* <TransactionsTable 
-              transactions={account?.data.transactions}
-            /> */}
+            <TransactionsTable 
+              transactions={account?.transactions}
+            />
           </section>
         </div>
     </div>
